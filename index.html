@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MZ Mercado — Compra e Venda em Moçambique</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#17202a}
+header{background:linear-gradient(135deg,#009739,#00b347);color:#fff;padding:18px 5%;position:sticky;top:0;z-index:10}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{font-size:25px;font-weight:800}.tag{font-size:12px;opacity:.9}
+.search{margin-top:14px;display:flex;background:#fff;border-radius:12px;overflow:hidden}.search input{flex:1;padding:13px;border:0;outline:0;font-size:15px}.search button{border:0;background:#ffd43b;padding:0 17px;font-weight:bold}
+main{max-width:1100px;margin:auto;padding:18px 5%}.hero{background:#fff;border-radius:18px;padding:22px;box-shadow:0 3px 15px #0000000c}.hero h1{margin:0 0 7px;font-size:27px}.hero p{margin:0;color:#687078}
+.categories{display:flex;gap:9px;overflow:auto;padding:15px 0}.cat{background:#fff;border:1px solid #e4e7eb;border-radius:12px;padding:11px 14px;white-space:nowrap;cursor:pointer}.cat:hover{border-color:#009739}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px}.section-title h2{font-size:20px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 3px 13px #0000000b;position:relative}.pic{height:155px;background:#e9ecef;display:flex;align-items:center;justify-content:center;font-size:52px;overflow:hidden}.pic img{width:100%;height:100%;object-fit:cover;display:block}.body{padding:13px}.price{font-size:19px;font-weight:800;color:#009739}.name{font-weight:700;margin:5px 0}.meta{font-size:12px;color:#777}.badge{position:absolute;top:10px;left:10px;background:#ff922b;color:#fff;padding:6px 9px;border-radius:20px;font-size:11px;font-weight:bold}.heart{position:absolute;top:10px;right:10px;background:#fff;border:0;border-radius:50%;width:34px;height:34px;font-size:18px;cursor:pointer}.actions{display:flex;gap:7px;margin-top:10px}.actions button{flex:1;padding:9px;border-radius:9px;border:1px solid #ddd;background:#fff;cursor:pointer;font-weight:bold}.actions .buy{background:#009739;color:white;border-color:#009739}
+.cta{margin-top:22px;background:#17202a;color:#fff;padding:20px;border-radius:17px}.cta button{background:#ffd43b;border:0;padding:12px 16px;border-radius:9px;font-weight:bold;margin-top:8px}
+footer{padding:25px 5%;text-align:center;color:#707780;font-size:13px}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:20;align-items:center;justify-content:center;padding:20px}.modalbox{background:#fff;border-radius:17px;padding:22px;max-width:430px;width:100%}.modalbox input,.modalbox textarea,.modalbox select{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:9px}.close{float:right;border:0;background:none;font-size:22px}
+@media(max-width:500px){.hero h1{font-size:22px}.grid{grid-template-columns:repeat(2,1fr)}.pic{height:120px}.body{padding:10px}.price{font-size:16px}.name{font-size:14px}}
+
+.feed{margin-top:24px}.post{background:#fff;border-radius:16px;margin:14px 0;box-shadow:0 3px 13px #0000000b;overflow:hidden}.posthead{display:flex;align-items:center;gap:10px;padding:14px}.avatar{width:42px;height:42px;border-radius:50%;background:#009739;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold}.postname{font-weight:700}.posttime{font-size:12px;color:#777}.posttext{padding:0 14px 12px;line-height:1.45}.postimg{width:100%;max-height:360px;object-fit:cover;display:block}.poststats{display:flex;justify-content:space-between;padding:9px 14px;color:#777;font-size:13px}.postactions{display:flex;border-top:1px solid #eee}.postactions button{flex:1;padding:12px;border:0;background:#fff;font-weight:700;color:#555;cursor:pointer}.postactions button:hover{background:#f1f8f4;color:#009739}.feednav{display:flex;gap:8px;margin:15px 0;overflow:auto}.feednav button{white-space:nowrap;border:1px solid #ddd;background:#fff;border-radius:20px;padding:9px 14px;font-weight:bold}.feednav button.active{background:#009739;color:#fff;border-color:#009739}
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><div><div class="logo">🛒 MZ Mercado</div><div class="tag">Compra • Venda • Descubra em Moçambique</div></div><button onclick="openSell()" style="background:#ffd43b;border:0;padding:10px 12px;border-radius:10px;font-weight:bold">+ Vender</button></div>
+  <div class="search"><input id="search" placeholder="O que procuras? Ex.: telefone, carro..." oninput="filterProducts()"><button>🔎</button></div>
+</header>
+
+<main>
+<section class="hero">
+<h1>Encontre o que procura perto de si</h1>
+<p>Ofertas, produtos, serviços e oportunidades num só lugar.</p>
+</section>
+
+<div class="categories">
+<button class="cat" onclick="filterCat('Todos')">🔥 Todos</button><button class="cat" onclick="filterCat('Telemóveis')">📱 Telemóveis</button><button class="cat" onclick="filterCat('Eletrónica')">💻 Eletrónica</button><button class="cat" onclick="filterCat('Veículos')">🚗 Veículos</button><button class="cat" onclick="filterCat('Casa')">🏠 Casa</button><button class="cat" onclick="filterCat('Moda')">👕 Moda</button><button class="cat" onclick="filterCat('Serviços')">🛠️ Serviços</button><button class="cat" onclick="filterCat('Empregos')">💼 Empregos</button>
+</div>
+
+<div class="section-title"><h2>🔥 Ofertas em destaque</h2><span id="count"></span></div>
+<div id="products" class="grid"></div>
+
+
+<section class="feed">
+  <div class="section-title"><h2>🏠 Publicações</h2><span>Comunidade MZ</span></div>
+  <div class="feednav">
+    <button class="active" onclick="feedFilter('Todas',this)">Todas</button>
+    <button onclick="feedFilter('Vendas',this)">🛍️ Vendas</button>
+    <button onclick="feedFilter('Serviços',this)">🛠️ Serviços</button>
+    <button onclick="feedFilter('Comunidade',this)">👥 Comunidade</button>
+  </div>
+  <div id="feed"></div>
+</section>
+
+<section class="cta">
+<h2>Quer vender no MZ Mercado?</h2><p>Publique o seu produto e alcance compradores em Moçambique.</p>
+<button onclick="openSell()">Publicar anúncio grátis</button>
+</section>
+</main>
+
+<footer>MZ Mercado © 2026 • Contacto: 872 434 508 / 856 228 730</footer>
+
+<div id="modal" class="modal" onclick="if(event.target.id==='modal')closeModal()">
+<div class="modalbox"><button class="close" onclick="closeModal()">×</button><h2>📦 Publicar anúncio</h2>
+<input id="pname" placeholder="Nome do produto/serviço"><input id="pprice" placeholder="Preço em MT"><select id="pcat"><option>Telemóveis</option><option>Eletrónica</option><option>Veículos</option><option>Casa</option><option>Moda</option><option>Serviços</option><option>Empregos</option></select><input id="ploc" placeholder="Cidade/localização"><textarea id="pdesc" placeholder="Descrição"></textarea>
+<button onclick="publish()" style="width:100%;padding:12px;background:#009739;color:white;border:0;border-radius:9px;font-weight:bold">Publicar</button>
+</div></div>
+
+<script>
+let products=[
+{name:"Smartphone Android",price:"8.500 MT",cat:"Telemóveis",loc:"Maputo",icon:"📱",badge:"OFERTA",image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=85"},
+{name:"Computador portátil",price:"18.000 MT",cat:"Eletrónica",loc:"Maputo",icon:"💻",badge:"DESTAQUE",image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=85"},
+{name:"Motorizada",price:"45.000 MT",cat:"Veículos",loc:"Matola",icon:"🏍️",badge:"POPULAR",image:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=85"},
+{name:"Sofá moderno",price:"12.000 MT",cat:"Casa",loc:"Maputo",icon:"🛋️",badge:"OFERTA",image:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85"},
+{name:"Tênis desportivo",price:"2.500 MT",cat:"Moda",loc:"Maputo",icon:"👟",badge:"NOVO",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85"},
+{name:"Técnico de informática",price:"A combinar",cat:"Serviços",loc:"Matola",icon:"🧑‍💻",badge:"SERVIÇO",image:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=85"}
+];
+function render(list=products){
+const box=document.getElementById('products'); box.innerHTML='';
+list.forEach((p,i)=>{box.innerHTML+=`<article class="card"><span class="badge">${p.badge||'NOVO'}</span><button class="heart" onclick="fav(this)">♡</button><div class="pic">${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : (p.icon||'📦')}</div><div class="body"><div class="price">${p.price}</div><div class="name">${p.name}</div><div class="meta">📍 ${p.loc} • ${p.cat}</div><div class="actions"><button onclick="contact('${p.name}')">💬 Contactar</button><button class="buy" onclick="alert('Obrigado! Contacte o vendedor pelo WhatsApp ou telefone para concluir a compra.')">Comprar</button></div></div></article>`});
+document.getElementById('count').textContent=list.length+' anúncios';
+}
+function fav(b){b.textContent=b.textContent==='♡'?'♥':'♡'}
+function contact(n){alert('Para contactar o vendedor sobre “'+n+'”, use o WhatsApp/telefone indicado no anúncio.')}
+function filterProducts(){let q=document.getElementById('search').value.toLowerCase();render(products.filter(p=>(p.name+' '+p.cat+' '+p.loc).toLowerCase().includes(q)))}
+function filterCat(c){document.getElementById('search').value='';render(c==='Todos'?products:products.filter(p=>p.cat===c))}
+function openSell(){document.getElementById('modal').style.display='flex'} function closeModal(){document.getElementById('modal').style.display='none'}
+function publish(){let n=document.getElementById('pname').value.trim();if(!n)return alert('Digite o nome do produto.');products.unshift({name:n,price:document.getElementById('pprice').value||'A combinar',cat:document.getElementById('pcat').value,loc:document.getElementById('ploc').value||'Moçambique',icon:'📦',badge:'NOVO'});closeModal();render();alert('Anúncio adicionado nesta versão de demonstração.');}
+render();
+
+let posts=[
+{name:"MZ Mercado",type:"Vendas",initial:"MZ",time:"Hoje",text:"🔥 Nova oportunidade! Encontre produtos e serviços anunciados por pessoas de Moçambique.",image:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=85",likes:24,comments:5},
+{name:"Loja Maputo",type:"Vendas",initial:"LM",time:"2 h",text:"📱 Temos smartphones disponíveis. Consulte o anúncio para conhecer preço e detalhes.",image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1000&q=85",likes:18,comments:3},
+{name:"Comunidade MZ",type:"Comunidade",initial:"CM",time:"5 h",text:"👋 Bem-vindo ao MZ Mercado! Publique, descubra, comente e partilhe oportunidades.",image:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=85",likes:31,comments:8},
+{name:"Serviços MZ",type:"Serviços",initial:"SM",time:"Ontem",text:"🛠️ Profissionais podem divulgar os seus serviços e encontrar novos clientes.",image:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=85",likes:15,comments:2}
+];
+function renderFeed(list=posts){
+ const box=document.getElementById('feed'); box.innerHTML='';
+ list.forEach((p,i)=>{box.innerHTML+=`<article class="post">
+ <div class="posthead"><div class="avatar">${p.initial}</div><div><div class="postname">${p.name}</div><div class="posttime">${p.time} • ${p.type}</div></div></div>
+ <div class="posttext">${p.text}</div><img class="postimg" src="${p.image}" alt="Publicação">
+ <div class="poststats"><span id="likes-${i}">👍 ${p.likes} gostos</span><span>💬 ${p.comments} comentários</span></div>
+ <div class="postactions"><button onclick="likePost(${i})">👍 Gostar</button><button onclick="commentPost(${i})">💬 Comentar</button><button onclick="sharePost('${p.name}')">↗️ Partilhar</button></div>
+ </article>`});
+}
+function likePost(i){posts[i].likes++;document.getElementById('likes-'+i).textContent='👍 '+posts[i].likes+' gostos'}
+function commentPost(i){let c=prompt('Escreva o seu comentário:');if(c)alert('Comentário publicado nesta demonstração.')}
+function sharePost(n){if(navigator.share){navigator.share({title:'MZ Mercado',text:'Veja esta publicação no MZ Mercado: '+n})}else alert('Publicação pronta para partilhar: '+n)}
+function feedFilter(type,b){document.querySelectorAll('.feednav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderFeed(type==='Todas'?posts:posts.filter(p=>p.type===type))}
+renderFeed();
+</script>
+</body>
+</html>
